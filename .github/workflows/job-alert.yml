@@ -1,0 +1,36 @@
+name: Job Alert
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # every 5 minutes, 24/7
+  workflow_dispatch:          # manual trigger from GitHub UI
+
+# prevent two runs overlapping and fighting over seen_jobs.json
+concurrency:
+  group: job-alert
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write         # needed to commit seen_jobs.json back
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run scraper
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python3 job_scraper/scraper.py
+
+      - name: Save state
+        run: |
+          git config user.name  "job-alert[bot]"
+          git config user.email "job-alert@users.noreply.github.com"
+          git add --force job_scraper/seen_jobs.json
+          git diff --staged --quiet || git commit -m "chore: update seen_jobs state [skip ci]"
+          git push
