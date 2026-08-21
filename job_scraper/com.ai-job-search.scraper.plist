@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <!-- ── identity ── -->
+  <key>Label</key>
+  <string>com.ai-job-search.scraper</string>
+
+  <!-- ── what to run ── -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/venkatasai/ai-job-search/job_scraper/scraper.py</string>
+  </array>
+
+  <!-- ── schedule: every 10 minutes ── -->
+  <key>StartInterval</key>
+  <integer>600</integer>
+
+  <!-- ── also run immediately when loaded ── -->
+  <key>RunAtLoad</key>
+  <true/>
+
+  <!-- ── Gmail credentials: fill these in before running install.sh ── -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>GMAIL_FROM</key>
+    <string>YOUR_EMAIL@gmail.com</string>
+    <key>GMAIL_APP_PASSWORD</key>
+    <string>YOUR_16_CHAR_APP_PASSWORD</string>
+    <key>GMAIL_TO</key>
+    <string>YOUR_EMAIL@gmail.com</string>
+  </dict>
+
+  <!-- ── logs ── -->
+  <key>StandardOutPath</key>
+  <string>/Users/venkatasai/ai-job-search/job_scraper/launchd.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/venkatasai/ai-job-search/job_scraper/launchd.log</string>
+
+</dict>
+</plist>
